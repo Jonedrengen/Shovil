@@ -23,15 +23,16 @@ function usage {
 }
 
 #INPUT and SOURCING
-while getopts "i:s:o:m" opt; do
+while getopts "i:s:o:m:" opt; do
   case $opt in
     i) input_folder="$OPTARG" ;;
     s) sample_list="$OPTARG" ;;
     o) output_dir="$OPTARG" ;;
-    m) mode="$OPTARG" ;;
+    m) mode="OPTARG" ;;
     \?) echo "Invalid option -$OPTARG" >&2 ;;
   esac
 done
+mode=${mode:-SLURM}
 slurm_script_location="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
 
 
