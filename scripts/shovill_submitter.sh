@@ -32,7 +32,7 @@ while getopts "i:s:o:m" opt; do
     \?) echo "Invalid option -$OPTARG" >&2 ;;
   esac
 done
-slurm_script_location="/Users/B328695/Desktop/Biotools/Shovill/Shovil/scripts"
+slurm_script_location="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
 
 
 #INPUT CHECKS

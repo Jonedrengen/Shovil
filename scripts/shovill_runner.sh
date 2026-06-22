@@ -19,7 +19,7 @@ main_output_folder_input=$4
 #CONDA
 conda_source="/users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh"
 . "$conda_source"
-conda activate shovill_env_Jon
+conda activate shovill_module
 
 #INPUT
 R1="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $3}')"
