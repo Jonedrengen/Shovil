@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J shovill_runner_%j
+#SBATCH -J shovill_runner_%a
 #SBATCH --error=shovill_runner_%A_%a.err
 #SBATCH --output=shovill_runner_%A_%a.out
 #SBATCH --cpus-per-task=2
@@ -26,8 +26,8 @@ R1="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}_
 R2="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $4}')"
 
 # Create sample folder for outputs
-mkdir -p "$main_output_folder_input/processing_files/$R1"
-mkdir -p "$main_output_folder_input/processing_files/$R1/slurm_outputs"
+mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}"
+mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
 
 #RUN
 echo "Running shovill on $Data_Folder_input"

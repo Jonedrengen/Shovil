@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J shovill_aggregator_%j
+#SBATCH -J shovill_aggregator_%a
 #SBATCH --error=shovill_aggregator_%A_%a.err
 #SBATCH --output=shovill_aggregator_%A_%a.out
 #SBATCH --cpus-per-task=2
@@ -17,6 +17,21 @@ main_output_folder_input=$1
 mkdir -p "$main_output_folder_input/compiled_files"
 
 #link all 
+while read -r line;
+do
+    file_name=${line}
+
+    echo "linkining $line/"
+
+    #rename TODO
+
+    ln -s "$line/contigs.fa" "$main_output_folder_input/compiled_files"
+
+done < "$main_output_folder_input/processing_files"
+
+#move slurm stuff
+mv shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/slurm
+mv shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $main_output_folder_input/slurm
 
 #TIMER END
 ENDTIMER="$(date +%s)"

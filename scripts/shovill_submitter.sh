@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J shovill_submitter
-#SBATCH --error=shovill_submitter_%j.err
-#SBATCH --output=shovill_submitter_%j.out
+#SBATCH -J shovill_submitter%a
+#SBATCH --error=shovill_submitter_%a.err
+#SBATCH --output=shovill_submitter_%a.out
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00
