@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set +x
 #SAMPLELIST
 samplelist_input=$1
 
@@ -39,3 +39,4 @@ done < "${samplelist_filename}_R1s.txt"
 
 echo "cleaning up intermediate files"
 rm -f "${samplelist_filename}_R1s.txt"
+set -x

@@ -9,7 +9,7 @@
 
 #written by Jon Sztuk Slotved (JOSS@ssi.dk)
 #date 22062026
-
+set +x
 #HELP
 function usage {
     echo "Usage: $0 -i <input_folder> -s <sample_list> -o <output_dir> [-m <mode>] "
@@ -126,3 +126,4 @@ do
     fi
 done
 
+set -x
