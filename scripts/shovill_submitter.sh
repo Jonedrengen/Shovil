@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J shovill_submitter
-#SBATCH --error=shovill_submitter_%a.err
-#SBATCH --output=shovill_submitter_%a.out
+#SBATCH --error=shovill_submitter_%j.err
+#SBATCH --output=shovill_submitter_%j.out
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00
@@ -12,27 +12,30 @@
 set +x
 #HELP
 function usage {
-    echo "Usage: $0 -i <input_folder> -s <sample_list> -o <output_dir> [-m <mode>] "
+    echo "Usage essential: $0 -i <input_folder> -s <sample_list> -o <output_dir>"
     echo "  -i: Path to the input folder containing sample files (e.g., FASTQ files)"
     echo "  -s: Path to the sample list file (e.g., a text file with sample names)"
     echo "  -o: Path to the output directory where results will be stored"
     echo "  -m: Mode of operation (e.g., 'SLURM' or 'LOCAL'), default = 'SLURM'"
+    echo "  -j: Jobname, default = 'shovill_runner' "
     echo
     echo "isolates should be named in the format: sample_R1.fastq.gz and sample_R2.fastq.gz or sample_R1.fastq and sample_R2.fastq"
     echo "avoid spaces, dots, and special characters in sample names to prevent issues with file handling"
 }
 
 #INPUT and SOURCING
-while getopts "i:s:o:m:" opt; do
+while getopts "i:s:o:m:j:" opt; do
   case $opt in
     i) input_folder="$OPTARG" ;;
     s) sample_list="$OPTARG" ;;
     o) output_dir="$OPTARG" ;;
-    m) mode="OPTARG" ;;
+    m) mode="$OPTARG" ;;
+    j) jobname="$OPTARG" ;;
     \?) echo "Invalid option -$OPTARG" >&2 ;;
   esac
 done
 mode=${mode:-SLURM}
+jobname=${jobname:-shovill_runner}
 slurm_script_location="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
 
 
@@ -118,17 +121,16 @@ do
     array_end="$(cat "$slurm_array_ready_file" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
 
     if [ "$mode" == "SLURM" ]; then
-        echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} "$slurm_script_location/shovill_runner.sh" $input_folder $slurm_array_ready_file $index_set $output_dir"
-        sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} "$slurm_script_location/shovill_runner.sh" "$input_folder" "$slurm_array_ready_file" "$index_set" "$output_dir"
+        echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname "$slurm_script_location/shovill_runner.sh" $input_folder $slurm_array_ready_file $index_set $output_dir"
+        sbatch --array="${array_start}-${array_end}%${Slurm_CalcRunParallel}" -J "$jobname" "$slurm_script_location/shovill_runner.sh" "$input_folder" "$slurm_array_ready_file" "$index_set" "$output_dir"
     else
         echo "Running in LOCAL mode is not implemented yet. Please use SLURM mode."
         #bash "$slurm_script_location/shovill_runner.sh" "$input_folder" "$slurm_array_ready_file" "$index_set" "$output_dir"
     fi
 done
 
-echo "sbatch --dependency=singleton $slurm_script_location/shovill_aggregator.sh $output_dir"
-sbatch --dependency=singleton "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
-
+echo "--dependency=afterok:${SLURM_ARRAY_JOB_ID} $slurm_script_location/shovill_aggregator.sh $output_dir"
+sbatch --dependency=singleton -J "$jobname" "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
 
 
 set -x

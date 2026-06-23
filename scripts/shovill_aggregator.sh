@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J shovill_aggregator
-#SBATCH --error=shovill_aggregator_%A_%a.err
-#SBATCH --output=shovill_aggregator_%A_%a.out
+#SBATCH --error=shovill_aggregator_%j.err
+#SBATCH --output=shovill_aggregator_%j.out
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
 #SBATCH --time=10:00:00
