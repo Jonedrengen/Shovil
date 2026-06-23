@@ -17,7 +17,7 @@ main_output_folder_input=$1
 mkdir -p "$main_output_folder_input/compiled_files"
 
 #link all 
-while read -r line;
+for line in $main_output_folder_input/processing_files;
 do
     file_name=${line%%.*}
 
@@ -26,12 +26,12 @@ do
     #rename TODO
 
     ln -s "$line/contigs.fa" "$main_output_folder_input/compiled_files/${file_name}.fasta"
+done
 
-done < "$main_output_folder_input/processing_files"
 
 #move slurm stuff
-mv shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/slurm
-mv shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $main_output_folder_input/slurm
+mv "shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err" "$main_output_folder_input/slurm"
+mv "shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out" "$main_output_folder_input/slurm"
 
 #TIMER END
 ENDTIMER="$(date +%s)"
