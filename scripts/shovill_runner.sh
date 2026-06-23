@@ -25,17 +25,17 @@ conda activate shovill_module
 R1="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $3}')"
 R2="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $4}')"
 
-# Create sample folder for outputs
-mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}"
-mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
 
 #RUN
 echo "Running shovill on $Data_Folder_input"
 shovill --outdir "$main_output_folder_input/processing_files/${R1%%.*}" --R1 "$Data_Folder_input/$R1" --R2 "$Data_Folder_input/$R2"
 
+# Create sample folder for outputs
+mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
+
 #MOVING SLURM OUT/ERR
-mv "shovill_runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err" "$main_output_folder_input/processing_files/$R1/slurm_outputs"
-mv "shovill_runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out" "$main_output_folder_input/processing_files/$R1/slurm_outputs"
+mv "shovill_runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err" "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
+mv "shovill_runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out" "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
 
 
 #TIMER END
