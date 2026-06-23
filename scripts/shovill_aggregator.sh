@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J shovill_aggregator_%a
+#SBATCH -J shovill_aggregator
 #SBATCH --error=shovill_aggregator_%A_%a.err
 #SBATCH --output=shovill_aggregator_%A_%a.out
 #SBATCH --cpus-per-task=2

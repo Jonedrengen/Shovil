@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH -J shovill_runner_%a
+#SBATCH -J shovill_runner
 #SBATCH --error=shovill_runner_%A_%a.err
 #SBATCH --output=shovill_runner_%A_%a.out
-#SBATCH --cpus-per-task=2
-#SBATCH --mem=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
 #SBATCH --time=01:00:00
 #SBATCH --partition=project
 set +x
@@ -31,7 +31,7 @@ mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
 
 #RUN
 echo "Running shovill on $Data_Folder_input"
-shovill --outdir "$main_output_folder_input/processing_files/$R1" --R1 "$Data_Folder_input/$R1" --R2 "$Data_Folder_input/$R2"
+shovill --outdir "$main_output_folder_input/processing_files/${R1%%.*}" --R1 "$Data_Folder_input/$R1" --R2 "$Data_Folder_input/$R2"
 
 #MOVING SLURM OUT/ERR
 mv "shovill_runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err" "$main_output_folder_input/processing_files/$R1/slurm_outputs"

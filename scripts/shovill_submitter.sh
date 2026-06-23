@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J shovill_submitter%a
+#SBATCH -J shovill_submitter
 #SBATCH --error=shovill_submitter_%a.err
 #SBATCH --output=shovill_submitter_%a.out
 #SBATCH --cpus-per-task=4
