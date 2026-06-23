@@ -19,13 +19,13 @@ mkdir -p "$main_output_folder_input/compiled_files"
 #link all 
 while read -r line;
 do
-    file_name=${line}
+    file_name=${line%%.*}
 
     echo "linkining $line/"
 
     #rename TODO
 
-    ln -s "$line/contigs.fa" "$main_output_folder_input/compiled_files"
+    ln -s "$line/contigs.fa" "$main_output_folder_input/compiled_files/${file_name}.fasta"
 
 done < "$main_output_folder_input/processing_files"
 

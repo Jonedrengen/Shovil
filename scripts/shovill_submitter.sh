@@ -126,4 +126,9 @@ do
     fi
 done
 
+echo "sbatch --dependency=singleton $slurm_script_location/shovill_aggregator.sh $output_dir"
+sbatch --dependency=singleton "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
+
+
+
 set -x

@@ -3,7 +3,7 @@
 #SBATCH --error=shovill_runner_%A_%a.err
 #SBATCH --output=shovill_runner_%A_%a.out
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+#SBATCH --mem=24G
 #SBATCH --time=01:00:00
 #SBATCH --partition=project
 set +x
