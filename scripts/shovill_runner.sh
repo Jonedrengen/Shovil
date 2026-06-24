@@ -17,7 +17,7 @@ index_set=$3
 main_output_folder_input=$4
 
 #CONFIG
-config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
+config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"
 
 #CONDA
 conda_source="$(grep 'conda_source' "$config" | awk -F'=' '{print $2}' | xargs)"
