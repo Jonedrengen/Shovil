@@ -36,8 +36,8 @@ while getopts "i:s:o:m:j:" opt; do
 done
 mode=${mode:-SLURM}
 jobname=${jobname:-shovill_runner}
-config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
-slurm_script_location="$(grep '^slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
+config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"
+slurm_script_location="$(grep 'slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
 
 
 #INPUT CHECKS
