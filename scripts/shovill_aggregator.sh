@@ -30,8 +30,8 @@ done
 
 
 #move slurm stuff
-mv "shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err" "$main_output_folder_input/slurm"
-mv "shovill_aggregator_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out" "$main_output_folder_input/slurm"
+mv "shovill_aggregator_${SLURM_JOB_ID}.err" "$main_output_folder_input/slurm"
+mv "shovill_aggregator_${SLURM_JOB_ID}.out" "$main_output_folder_input/slurm"
 
 #TIMER END
 ENDTIMER="$(date +%s)"

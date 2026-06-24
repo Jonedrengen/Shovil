@@ -16,10 +16,15 @@ Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
 index_set=$3
 main_output_folder_input=$4
 
+#CONFIG
+config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
+
 #CONDA
-conda_source="/users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh"
+conda_source="$(grep 'conda_source' "$config" | awk -F'=' '{print $2}' | xargs)"
+conda_env_name="$(grep 'conda_env_name' "$config" | awk -F'=' '{print $2}' | xargs)"
+
 . "$conda_source"
-conda activate shovill_module
+conda activate "$conda_env_name"
 
 #INPUT
 R1="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $3}')"

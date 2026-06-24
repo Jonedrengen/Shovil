@@ -36,7 +36,8 @@ while getopts "i:s:o:m:j:" opt; do
 done
 mode=${mode:-SLURM}
 jobname=${jobname:-shovill_runner}
-slurm_script_location="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
+config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts"
+slurm_script_location="$(grep '^slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
 
 
 #INPUT CHECKS
@@ -121,7 +122,7 @@ do
     array_end="$(cat "$slurm_array_ready_file" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
 
     if [ "$mode" == "SLURM" ]; then
-        echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname "$slurm_script_location/shovill_runner.sh" $input_folder $slurm_array_ready_file $index_set $output_dir"
+        echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $slurm_script_location/shovill_runner.sh $input_folder $slurm_array_ready_file $index_set $output_dir"
         sbatch --array="${array_start}-${array_end}%${Slurm_CalcRunParallel}" -J "$jobname" "$slurm_script_location/shovill_runner.sh" "$input_folder" "$slurm_array_ready_file" "$index_set" "$output_dir"
     else
         echo "Running in LOCAL mode is not implemented yet. Please use SLURM mode."
@@ -129,7 +130,7 @@ do
     fi
 done
 
-echo "--dependency=afterok:${SLURM_ARRAY_JOB_ID} $slurm_script_location/shovill_aggregator.sh $output_dir"
+echo "sbatch --dependency=singleton -J $jobname $slurm_script_location/shovill_aggregator.sh $output_dir"
 sbatch --dependency=singleton -J "$jobname" "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
 
 
