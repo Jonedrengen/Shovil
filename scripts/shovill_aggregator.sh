@@ -22,17 +22,17 @@ ls "$main_output_folder_input/processing_files" > "$main_output_folder_input/tmp
 while read -r line;
 do
     echo "extracting results from: $line"
-    file_name=$(basename "$line")
-    full_path="$main_output_folder_input/processing_files/${line}/config.fa"
+    fasta_path="$main_output_folder_input/processing_files/${line}/${line}.fasta"
 
-    if [[ -f "$full_path" ]];
+    if [[ -f "$fasta_path" ]];
     then
-        ln -s "${main_output_folder_input}/processing_files/${line}/contigs.fa" "$main_output_folder_input/compiled_files/${file_name}.fasta"
+        ln -s "${main_output_folder_input}/processing_files/${line}/${line}.fasta" "$main_output_folder_input/compiled_files"
     else
         echo "could not find fasta:"
         echo "file: $line"
-        echo "full_path: $full_path"
+        echo "full_path: $fasta_path"
     fi
+    echo
     
 done < "$main_output_folder_input/tmp_folderlist.txt"
 
