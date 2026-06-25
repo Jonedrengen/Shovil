@@ -25,7 +25,7 @@ do
 
     if [[ -f "$fasta_path" ]];
     then
-        ln -s "${main_output_folder_input}/processing_files/${line}/${line}.fasta" "$main_output_folder_input/compiled_files"
+        cp "${main_output_folder_input}/processing_files/${line}/${line}.fasta" "$main_output_folder_input/compiled_files"
     else
         echo "could not find fasta:"
         echo "file: $line"
