@@ -3,6 +3,7 @@ set +x
 #SAMPLELIST
 samplelist_input=$1
 
+
 #REMOVE EXTENSIONs
 samplelist_filename=$(basename "${samplelist_input%%.*}")
 

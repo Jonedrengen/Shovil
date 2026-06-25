@@ -16,35 +16,40 @@ function usage {
     echo "  -i: Path to the input folder containing sample files (e.g., FASTQ files)"
     echo "  -s: Path to the sample list file (e.g., a text file with sample names)"
     echo "  -o: Path to the output directory where results will be stored"
-    echo "  -m: Mode of operation (e.g., 'SLURM' or 'LOCAL'), default = 'SLURM'"
-    echo "  -j: Jobname, default = 'shovill_runner' "
+    echo 
+    echo "Usage optional"
+    echo "  -m: Mode of operation (e.g., 'SLURM' or 'LOCAL'),     default = 'SLURM'"
+    echo "  -j: Jobname,                                          default = 'shovill_runner' "
     echo
     echo "isolates should be named in the format: sample_R1.fastq.gz and sample_R2.fastq.gz or sample_R1.fastq and sample_R2.fastq"
     echo "avoid spaces, dots, and special characters in sample names to prevent issues with file handling"
 }
 
 #INPUT and SOURCING
-while getopts "i:s:o:m:j:" opt; do
+while getopts "i:s:o:m:j:c:" opt; do
   case $opt in
     i) input_folder="$OPTARG" ;;
     s) sample_list="$OPTARG" ;;
     o) output_dir="$OPTARG" ;;
     m) mode="$OPTARG" ;;
     j) jobname="$OPTARG" ;;
+    c) config="$OPTARG";;
     \?) echo "Invalid option -$OPTARG" >&2 ;;
   esac
 done
 mode=${mode:-SLURM}
 jobname=${jobname:-shovill_runner}
-config="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"
+config=${config:-"/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"}
 slurm_script_location="$(grep 'slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
 
 
 #INPUT CHECKS
+#do they exist
 if [ -z "$input_folder" ] || [ -z "$sample_list" ] || [ -z "$output_dir" ]; then
     usage
     exit 1
 fi
+
 
 
 #CREATE SLURM ARRAY FILE
@@ -68,7 +73,7 @@ fi
 mkdir -p "$output_dir/logs"
 shovill --version > "$output_dir/logs/shovill_version.log" 2>&1
 shovill --check > "$output_dir/logs/shovill_check.log" 2>&1
-mv ${samplelist_filename}_SLURM-ARRAY-READY.txt "$output_dir/"
+mv "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$output_dir/"
 
 #SLURM ARRAY SETTINGS
 slurm_array_ready_file="$output_dir/${samplelist_filename}_SLURM-ARRAY-READY.txt"
