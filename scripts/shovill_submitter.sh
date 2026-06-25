@@ -9,7 +9,6 @@
 
 #written by Jon Sztuk Slotved (JOSS@ssi.dk)
 #date 22062026
-set +x
 #HELP
 function usage {
     echo "Usage essential: $0 -i <input_folder> -s <sample_list> -o <output_dir>"
@@ -18,8 +17,9 @@ function usage {
     echo "  -o: Path to the output directory where results will be stored"
     echo 
     echo "Usage optional"
-    echo "  -m: Mode of operation (e.g., 'SLURM' or 'LOCAL'),     default = 'SLURM'"
-    echo "  -j: Jobname,                                          default = 'shovill_runner' "
+    echo "  -m: Mode of operation (e.g., 'SLURM' or 'LOCAL'),  default = 'SLURM'"
+    echo "  -j: Jobname,                                       default = 'shovill_runner' "
+    echo "  -c: config                                         default = 'local config on ugerm' "
     echo
     echo "isolates should be named in the format: sample_R1.fastq.gz and sample_R2.fastq.gz or sample_R1.fastq and sample_R2.fastq"
     echo "avoid spaces, dots, and special characters in sample names to prevent issues with file handling"
@@ -137,6 +137,3 @@ done
 
 echo "sbatch --dependency=singleton -J $jobname $slurm_script_location/shovill_aggregator.sh $output_dir"
 sbatch --dependency=singleton -J "$jobname" "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
-
-
-set -x

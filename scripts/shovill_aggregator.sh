@@ -6,7 +6,6 @@
 #SBATCH --mem=16G
 #SBATCH --time=10:00:00
 #SBATCH --partition=project
-set +x
 #TIMER START
 STARTTIMER="$(date +%s)"
 
@@ -48,5 +47,3 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
-
-set -x

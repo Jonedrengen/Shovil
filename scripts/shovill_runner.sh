@@ -6,7 +6,6 @@
 #SBATCH --mem=24G
 #SBATCH --time=01:00:00
 #SBATCH --partition=project
-set +x
 #TIMER START
 STARTTIMER="$(date +%s)"
 
@@ -36,7 +35,7 @@ echo "Running shovill on $Data_Folder_input"
 shovill --outdir "$main_output_folder_input/processing_files/${R1%%.*}" --R1 "$Data_Folder_input/$R1" --R2 "$Data_Folder_input/$R2"
 
 #RENAME std config.fa
-mv "$main_output_folder_input/processing_files/${R1%%.*}/config.fa" "$main_output_folder_input/processing_files/${R1%%.*}/${R1%%.*}.fasta"
+mv "$main_output_folder_input/processing_files/${R1%%.*}/contigs.fa" "$main_output_folder_input/processing_files/${R1%%.*}/${R1%%.*}.fasta"
 
 # Create sample folder for outputs
 mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
@@ -53,4 +52,3 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
-set -x
