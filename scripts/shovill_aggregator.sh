@@ -15,18 +15,26 @@ main_output_folder_input=$1
 
 #FILESYSTEM
 mkdir -p "$main_output_folder_input/compiled_files"
+ls "$main_output_folder_input/processing_files" > "$main_output_folder_input/tmp_folderlist.txt"
 
-#link all 
-for line in $main_output_folder_input/processing_files;
+
+#LINK to compiled_results
+while read -r line;
 do
-    file_name=${line%%.*}
+    echo "extracting results from: $line"
+    file_name=$(basename "$line")
+    full_path="$main_output_folder_input/processing_files/${line}/config.fa"
 
-    echo "linkining $line/"
-
-    #rename TODO
-
-    ln -s "$line/contigs.fa" "$main_output_folder_input/compiled_files/${file_name}.fasta"
-done
+    if [[ -f "$full_path" ]];
+    then
+        ln -s "${main_output_folder_input}/processing_files/${line}/contigs.fa" "$main_output_folder_input/compiled_files/${file_name}.fasta"
+    else
+        echo "could not find fasta:"
+        echo "file: $line"
+        echo "full_path: $full_path"
+    fi
+    
+done < "$main_output_folder_input/tmp_folderlist.txt"
 
 
 #move slurm stuff

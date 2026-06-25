@@ -35,6 +35,9 @@ R2="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${index_set}_
 echo "Running shovill on $Data_Folder_input"
 shovill --outdir "$main_output_folder_input/processing_files/${R1%%.*}" --R1 "$Data_Folder_input/$R1" --R2 "$Data_Folder_input/$R2"
 
+#RENAME std config.fa
+mv "$main_output_folder_input/processing_files/${R1%%.*}/config.fa" "$main_output_folder_input/processing_files/${R1%%.*}/${R1%%.*}.fasta"
+
 # Create sample folder for outputs
 mkdir -p "$main_output_folder_input/processing_files/${R1%%.*}/slurm_outputs"
 
