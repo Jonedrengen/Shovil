@@ -1,6 +1,9 @@
 
-
+#Jon placements
 sample_list_SLURM-ARRAY-READY.txt
+scripts/config.env
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
