@@ -6,6 +6,7 @@
 #SBATCH --mem=16G
 #SBATCH --time=10:00:00
 #SBATCH --partition=project
+
 #TIMER START
 STARTTIMER="$(date +%s)"
 
