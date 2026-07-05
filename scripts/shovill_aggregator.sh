@@ -16,6 +16,7 @@ main_output_folder_input=$1
 #FILESYSTEM
 mkdir -p "$main_output_folder_input/compiled_files"
 ls "$main_output_folder_input/processing_files" > "$main_output_folder_input/tmp_folderlist.txt"
+echo -e "sample_id\tstatus" > "$main_output_folder_input/logs/run_report.txt"
 
 
 #LINK to compiled_results
@@ -27,19 +28,27 @@ do
     if [[ -f "$fasta_path" ]];
     then
         cp "${main_output_folder_input}/processing_files/${line}/${line}.fasta" "$main_output_folder_input/compiled_files"
+        echo -e "${line}\tSUCCESS" >> "$main_output_folder_input/logs/run_report.txt"
     else
-        echo "could not find fasta:"
-        echo "file: $line"
-        echo "full_path: $fasta_path"
+        echo -e "${line}\tFAILED" >> "$main_output_folder_input/logs/run_report.txt"
     fi
     echo
-    
+
 done < "$main_output_folder_input/tmp_folderlist.txt"
 
+#grep failed assemblies
+if grep -q "FAILED" "$main_output_folder_input/logs/run_report.txt";
+then
+    grep "FAILED" "$main_output_folder_input/logs/run_report.txt" > "$main_output_folder_input/logs/failed_assemblies.txt"
+    echo "$(wc -l "$main_output_folder_input/logs/failed_assemblies.txt") assemblies failed."
+else
+    echo "all assemblies completed successfully."
+fi
 
-#move slurm stuff
+#move slurm stuff and.
 mv "shovill_aggregator_${SLURM_JOB_ID}.err" "$main_output_folder_input/slurm"
 mv "shovill_aggregator_${SLURM_JOB_ID}.out" "$main_output_folder_input/slurm"
+mv "$main_output_folder_input/tmp_folderlist.txt" "$main_output_folder_input/logs"
 
 #TIMER END
 ENDTIMER="$(date +%s)"

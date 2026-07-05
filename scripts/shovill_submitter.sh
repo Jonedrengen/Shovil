@@ -71,8 +71,6 @@ then
    fi
 fi
 mkdir -p "$output_dir/logs"
-shovill --version > "$output_dir/logs/shovill_version.log" 2>&1
-shovill --check > "$output_dir/logs/shovill_check.log" 2>&1
 mv "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$output_dir/"
 
 

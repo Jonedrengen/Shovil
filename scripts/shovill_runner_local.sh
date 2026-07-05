@@ -13,6 +13,7 @@ run_shovill() {
     local sequenceID
     sequenceID=$(echo "$R1" | awk -F'_R1' '{print $1}')
     shovill --outdir "$main_output_folder_input/processing_files/$sequenceID" --R1 "${Data_Folder_input}/${R1}" --R2 "${Data_Folder_input}/${R2}"
+    mv "$main_output_folder_input/processing_files/$sequenceID/contigs.fa" "$main_output_folder_input/processing_files/$sequenceID/$sequenceID.fasta"
 }
 #EXPORT for PARALLEL
 export Data_Folder_input main_output_folder_input config
@@ -29,5 +30,9 @@ conda activate "$conda_env"
 
 #RUN
 parallel -j $threads --colsep '__@__' 'run_shovill {3} {4}' :::: "$SLURM_array_list"
+
+#AGGREGATOR
+slurm_array_scripts=$(grep "slurm_array_scripts" "$config" | awk -F'=' '{print $2}')
+bash "$slurm_array_scripts/shovill_aggregator.sh" "$main_output_folder_input"
 
 #parallel [options] [command [arguments]] ( ::: arguments | :::+ arguments | :::: argfile(s) | ::::+ argfile(s) ) ...
