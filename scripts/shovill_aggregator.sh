@@ -42,7 +42,7 @@ then
     grep "FAILED" "$main_output_folder_input/logs/run_report.txt" > "$main_output_folder_input/logs/failed_assemblies.txt"
     echo "$(wc -l "$main_output_folder_input/logs/failed_assemblies.txt") assemblies failed."
 else
-    echo "all assemblies completed successfully."
+    echo "no failed assemblies found."
 fi
 
 #move slurm stuff and.
