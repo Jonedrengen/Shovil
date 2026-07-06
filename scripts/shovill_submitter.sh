@@ -83,9 +83,9 @@ then
    # Calculate how many array jobs are needed
    if (( $numFiles % $Slurm_MaxArraySize == 0 ))
    then
-      Slurm_chunks=`expr $numFiles / $Slurm_MaxArraySize`
+      Slurm_chunks=$(( $numFiles / $Slurm_MaxArraySize ))
    else
-      Slurm_chunks=`expr $numFiles / $Slurm_MaxArraySize + 1`# Round up to the next whole number
+      Slurm_chunks=$(( $numFiles / $Slurm_MaxArraySize + 1 )) # Round up to the next whole number
    fi
    # Set how many tasks to run at the same time for each array job
    if [ $Slurm_chunks == 1 ]
