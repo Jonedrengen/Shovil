@@ -37,8 +37,8 @@ while getopts "i:s:o:m:j:c:" opt; do
     \?) echo "Invalid option -$OPTARG" >&2 ;;
   esac
 done
-mode=${mode:-SLURM}
-jobname=${jobname:-shovill_runner}
+mode=${mode:-"SLURM"}
+jobname=${jobname:-"shovill_runner"}
 config=${config:-"/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"}
 slurm_script_location="$(grep 'slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
 
