@@ -2,7 +2,7 @@
 #Jon placements
 sample_list_SLURM-ARRAY-READY.txt
 scripts/config.env
-
+scripts/jon_local_config.env
 
 
 # Byte-compiled / optimized / DLL files
