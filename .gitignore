@@ -1,4 +1,6 @@
 
+data
+
 #Jon placements
 sample_list_SLURM-ARRAY-READY.txt
 scripts/config.env

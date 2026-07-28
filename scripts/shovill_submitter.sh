@@ -51,7 +51,8 @@ fi
 
 #CREATE SLURM ARRAY FILE
 bash "$slurm_script_location/shovill_SLURM_array.sh" "$sample_list"
-samplelist_filename=$(basename "${sample_list%%.*}") # Strip path and extension; array-ready file goes in current dir
+samplelist_filename_basename=$(basename "${sample_list}")
+samplelist_filename="${samplelist_filename_basename%%.*}"
 if [ ! -f "${samplelist_filename}_SLURM-ARRAY-READY.txt" ]; then
    echo "Error: failed to generate ${samplelist_filename}_SLURM-ARRAY-READY.txt"
    exit 1
