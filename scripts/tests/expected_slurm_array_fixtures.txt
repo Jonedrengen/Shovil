@@ -1,0 +1,10 @@
+0__@__1__@__424_2022C08-200_S232_R1_001.fastq.gz__@__424_2022C08-200_S232_R2_001.fastq.gz
+0__@__2__@__1_R1.fastq.gz__@__1_R2.fastq.gz
+0__@__3__@__2_R1.fastq.gz__@__2_R2.fastq.gz
+0__@__4__@__10_R1.fastq.gz__@__10_R2.fastq.gz
+0__@__5__@__100_R1.fastq.gz__@__100_R2.fastq.gz
+0__@__6__@__sample_001_R1.fastq.gz__@__sample_001_R2.fastq.gz
+0__@__7__@__sample_R1_001.fastq.gz__@__sample_R2_001.fastq.gz
+0__@__8__@__sample-r1.fastq.gz__@__sample-r2.fastq.gz
+0__@__9__@__sample.R1.fastq.gz__@__sample.R2.fastq.gz
+0__@__10__@__sample_R1_backup.fastq.gz__@__sample_R2_backup.fastq.gz
