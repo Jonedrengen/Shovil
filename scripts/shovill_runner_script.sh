@@ -276,3 +276,4 @@ fi
 
 aggregate_fasta_files_with_symlink "$output_dir/processing_files" "$output_dir/compiled_files"
 
+move_slurm_stderr_stdout "$output_dir/slurm_output" "$output_dir/${job_name}_*.err" "$output_dir/${job_name}_*.out"
