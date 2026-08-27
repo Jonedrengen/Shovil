@@ -1,5 +1,8 @@
 #!/bin/bash 
-
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
+#SBATCH --partition=project
+#SBATCH --job-name=shovill_joss
 
 ########################################
 ############# functions ##############
