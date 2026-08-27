@@ -1,3 +1,4 @@
+name: shovill_JOSS
 channels:
   - conda-forge
   - bioconda

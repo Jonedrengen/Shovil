@@ -1,6 +1,8 @@
 
-data
 
+Shovil/scripts/tests/
+data
+/Users/B328695/Desktop/Biotools/Shovill/Shovil/scripts/tests/out_test/sample_list.tsv
 #Jon placements
 sample_list_SLURM-ARRAY-READY.txt
 scripts/config.env
