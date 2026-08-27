@@ -3,6 +3,9 @@
 #SBATCH --mem=32G
 #SBATCH --partition=project
 #SBATCH --job-name=shovill_joss
+#SBATCH --output=shovill_%j.out
+#SBATCH --error=shovill_%j.err
+
 
 ########################################
 ############# functions ##############
@@ -178,7 +181,7 @@ create_shovill_command_parallel() {
     echo "${cmd[@]}"
 }
 
-#wraps a cmd in a slurm cmd and submits it to slurm
+# DEPRECATED as of 26-08-2026: wraps a cmd in a slurm cmd and submits it to slurm
 run_cmd_via_slurm() {
     local input_cmd="$1"
     local cpus="$2"
@@ -284,6 +287,7 @@ elif [ "$mode" == "local" ]; then
     echo "INFO: running shovill commands in parallel locally with $cpus threads"
     eval "$parallel_cmd"
     aggregate_fasta_files_with_symlink "$output_dir/processing_files" "$output_dir/compiled_files"
+    move_slurm_stderr_stdout "$output_dir/slurm_output" "$output_dir/shovill_%j.err" "$output_dir/shovill_%j.out"
 else
     echo "Error: Invalid mode specified in config file: $mode"
     exit 1
