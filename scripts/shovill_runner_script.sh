@@ -6,6 +6,9 @@
 ########################################
 
 help() {
+    echo
+    echo "NOTE: this script only works with local mode (you can sbatch the script, but do not change the config to slurm)"
+    echo
     echo "Usage: $0 -i <input_dir> -o <output_dir> -c <config_file>"
     echo "  -i <input_dir>      : Path to the input directory containing R1 and R2 files"
     echo "  -o <output_dir>     : Path to the output directory where results will be stored"
