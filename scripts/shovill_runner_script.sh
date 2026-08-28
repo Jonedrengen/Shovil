@@ -287,7 +287,7 @@ elif [ "$mode" == "local" ]; then
     echo "INFO: running shovill commands in parallel locally with $cpus threads"
     eval "$parallel_cmd"
     aggregate_fasta_files_with_symlink "$output_dir/processing_files" "$output_dir/compiled_files"
-    move_slurm_stderr_stdout "$output_dir/slurm_output" "$input_dir/shovill_%j.err" "$input_dir/shovill_%j.out"
+    move_slurm_stderr_stdout "$output_dir/slurm_output" "shovill_${SLURM_JOBID}.err" "shovill_${SLURM_JOBID}.out"
 else
     echo "Error: Invalid mode specified in config file: $mode"
     exit 1
