@@ -64,15 +64,15 @@ load_config_values() {
     shovill_separator=$(grep '^shovill_separator=' "$config_file" | awk -F'=' '{print $2}')
 
     # inform the user about the defined configuration values
-    printf "defined conda_source_path: %s\n" "$conda_source_path"
-    printf "defined conda_env_name: %s\n" "$conda_env_name"
-    printf "defined project_clone_path: %s\n" "$project_clone_path"
-    printf "defined mode: %s\n" "$mode"
-    printf "defined cpus: %s\n" "$cpus"
-    printf "defined mem: %s\n" "$mem"
-    printf "defined partition: %s\n" "$partition"
-    printf "defined job_name: %s\n" "$job_name"
-    printf "defined shovill_separator: %s\n" "$shovill_separator"
+    printf "conda_source_path: %s\n" "$conda_source_path"
+    printf "conda_env_name: %s\n" "$conda_env_name"
+    printf "project_clone_path: %s\n" "$project_clone_path"
+    printf "mode: %s\n" "$mode"
+    printf "cpus: %s\n" "$cpus"
+    printf "mem: %s\n" "$mem"
+    printf "partition: %s\n" "$partition"
+    printf "job_name: %s\n" "$job_name"
+    printf "shovill_separator: %s\n" "$shovill_separator"
     
     echo "______________________________________________________________"
     echo "INFO: if any of the above values are empty, please check your config_template.env file."
@@ -287,7 +287,7 @@ elif [ "$mode" == "local" ]; then
     echo "INFO: running shovill commands in parallel locally with $cpus threads"
     eval "$parallel_cmd"
     aggregate_fasta_files_with_symlink "$output_dir/processing_files" "$output_dir/compiled_files"
-    move_slurm_stderr_stdout "$output_dir/slurm_output" "$output_dir/shovill_%j.err" "$output_dir/shovill_%j.out"
+    move_slurm_stderr_stdout "$output_dir/slurm_output" "$input_dir/shovill_%j.err" "$input_dir/shovill_%j.out"
 else
     echo "Error: Invalid mode specified in config file: $mode"
     exit 1
