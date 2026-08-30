@@ -6,5 +6,4 @@ channels:
   - defaults
 dependencies:
   - shovill=1.4.1
-  - csvtk
   - parallel

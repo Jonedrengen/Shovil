@@ -1,0 +1,146 @@
+#!/bin/bash
+#SBATCH -J shovill_submitter
+#SBATCH --error=shovill_submitter_%j.err
+#SBATCH --output=shovill_submitter_%j.out
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=01:00:00
+#SBATCH --partition=project
+
+#written by Jon Sztuk Slotved (JOSS@ssi.dk)
+#date 22062026
+#HELP
+function usage {
+    echo "Usage essential: $0 -i <input_folder> -s <sample_list> -o <output_dir>"
+    echo "  -i: Path to the input folder containing sample files (e.g., FASTQ files)"
+    echo "  -s: Path to the sample list file (e.g., a text file with sample names)"
+    echo "  -o: Path to the output directory where results will be stored"
+    echo 
+    echo "Usage optional"
+    echo "  -m: Mode of operation ('SLURM' or 'LOCAL'),        default = 'SLURM'"
+    echo "  -j: Jobname,                                       default = 'shovill_runner' "
+    echo "  -c: config                                         default = 'local config on ugerm' "
+    echo
+    echo "Illumina reads should contain _R1, _R2 as separators"
+    echo "avoid spaces, dots, and special characters in sample names to prevent issues with file handling"
+}
+
+#INPUT and SOURCING
+while getopts "i:s:o:m:j:c:" opt; do
+  case $opt in
+    i) input_folder="$OPTARG" ;;
+    s) sample_list="$OPTARG" ;;
+    o) output_dir="$OPTARG" ;;
+    m) mode="$OPTARG" ;;
+    j) jobname="$OPTARG" ;;
+    c) config="$OPTARG";;
+    \?) echo "Invalid option -$OPTARG" >&2 ;;
+  esac
+done
+mode=${mode:-"SLURM"}
+jobname=${jobname:-"shovill_runner"}
+config=${config:-"/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/shovill/Shovil/scripts/config.env"}
+slurm_script_location="$(grep 'slurm_array_scripts' "$config" | awk -F'=' '{print $2}' | xargs)"
+
+#INPUT CHECKS
+#do they exist
+if [ -z "$input_folder" ] || [ -z "$sample_list" ] || [ -z "$output_dir" ]; then
+    usage
+    exit 1
+fi
+
+#CREATE SLURM ARRAY FILE
+bash "$slurm_script_location/shovill_SLURM_array.sh" "$sample_list"
+samplelist_filename_basename=$(basename "${sample_list}")
+samplelist_filename="${samplelist_filename_basename%%.*}"
+if [ ! -f "${samplelist_filename}_SLURM-ARRAY-READY.txt" ]; then
+   echo "Error: failed to generate ${samplelist_filename}_SLURM-ARRAY-READY.txt"
+   exit 1
+fi
+echo 
+echo
+
+#CREATE FILE SYSTEM
+mkdir -p "$output_dir"
+mkdir -p "$output_dir/processing_files"
+if [[ $mode == "SLURM" ]];
+then
+   mkdir -p "$output_dir/slurm"
+   if [ ! -z "$SLURM_JOB_ID" ]; then
+      mv "shovill_submitter_${SLURM_JOB_ID}.out" "$output_dir/slurm"
+      mv "shovill_submitter_${SLURM_JOB_ID}.err" "$output_dir/slurm"
+   fi
+fi
+mkdir -p "$output_dir/logs"
+mv "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$output_dir/"
+
+
+#SLURM ARRAY SETTINGS
+slurm_array_ready_file="$output_dir/${samplelist_filename}_SLURM-ARRAY-READY.txt"
+if [[ $mode == "SLURM" ]];
+then
+   numFiles=$(cat "$slurm_array_ready_file" | wc -l) # Total number of jobs
+   Slurm_MaxArraySize=1000 # Maximum number of tasks allowed in one array job
+   # Calculate how many array jobs are needed
+   if (( $numFiles % $Slurm_MaxArraySize == 0 ))
+   then
+      Slurm_chunks=$(( $numFiles / $Slurm_MaxArraySize ))
+   else
+      Slurm_chunks=$(( $numFiles / $Slurm_MaxArraySize + 1 )) # Round up to the next whole number
+   fi
+   # Set how many tasks to run at the same time for each array job
+   if [ $Slurm_chunks == 1 ]
+   then
+      Slurm_CalcRunParallel=12
+
+   elif [ $Slurm_chunks == 2 ]
+   then
+      Slurm_CalcRunParallel=6
+
+   elif [ $Slurm_chunks == 3 ]
+   then
+      Slurm_CalcRunParallel=4
+
+   elif [ $Slurm_chunks == 4 ]
+   then
+      Slurm_CalcRunParallel=3
+
+   elif [ $Slurm_chunks == 5 ]
+   then
+      Slurm_CalcRunParallel=2
+
+   elif [ $Slurm_chunks == 6 ]
+   then
+      Slurm_CalcRunParallel=2
+   else
+      Slurm_CalcRunParallel=1
+   fi
+   #set manually if needed, by removing comment below
+   #Slurm_CalcRunParallel=10
+fi
+
+#START SLURM
+if [[ $mode == "SLURM" ]];
+then
+   for ((i=0; i<$Slurm_chunks; i++)); 
+   do
+      index_set=$i
+
+      array_start="$(cat "$slurm_array_ready_file" | grep "^${i}__" | head -1 | awk -F "__@__" '{print $2}')"
+      array_end="$(cat "$slurm_array_ready_file" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
+
+         echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $slurm_script_location/shovill_runner.sh $input_folder $slurm_array_ready_file $index_set $output_dir"
+         sbatch --array="${array_start}-${array_end}%${Slurm_CalcRunParallel}" -J "$jobname" "$slurm_script_location/shovill_runner.sh" "$input_folder" "$slurm_array_ready_file" "$index_set" "$output_dir"
+   done
+
+   echo "sbatch --dependency=singleton -J $jobname $slurm_script_location/shovill_aggregator.sh $output_dir"
+   sbatch --dependency=singleton -J "$jobname" "$slurm_script_location/shovill_aggregator.sh" "$output_dir"
+fi
+
+#START LOCAL
+if [[ $mode == "LOCAL" ]];
+then
+   bash "$slurm_script_location/shovill_runner_local.sh" "$input_folder" "$slurm_array_ready_file" "$output_dir" "$config"
+   #NOTE: aggregate happens in local runner script
+fi
+

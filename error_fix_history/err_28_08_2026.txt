@@ -1,0 +1,33 @@
+
+error with version Traceback - fixed by changing Shovill version from 1.4.2 -> 1.4.1
+error:
+´´´
+INFO: running shovill commands in parallel locally with 2 threads
+[shovill] Hello jonslo
+[shovill] You ran: /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/shovill --R1 /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/SB27/data/testset/ERR5311803_1.fastq --R2 /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/SB27/data/testset/ERR5311803_2.fastq --outdir /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/SB27/data/testset/out/processing_files/ERR5311803
+[shovill] This is shovill 1.4.2
+[shovill] Written by Torsten Seemann
+[shovill] Homepage is https://github.com/tseemann/shovill
+[shovill] Operating system is linux
+[shovill] Perl version is v5.32.1
+[shovill] Machine has 20 CPU cores and 314.17 GB RAM
+[shovill] Using bwa - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/bwa | Version: 0.7.19-r1273
+[shovill] Using csvtk - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/csvtk | Error: unknown flag: --versiom
+[shovill] Using flash - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/flash | FLASH v1.2.11
+[shovill] Using gfa_connector - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/gfa_connector | gfa_connector --version
+[shovill] Using java - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/java | openjdk version "25.0.3" 2026-04-21
+[shovill] Using kmc - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/kmc | K-Mer Counter (KMC) ver. 3.2.4 (2024-02-09)
+[shovill] Using lighter - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/lighter | Lighter v1.1.3
+[shovill] Using megahit - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/megahit | MEGAHIT v1.2.9
+[shovill] Using megahit_toolkit - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/megahit_toolkit | v1.2.9
+[shovill] Using pilon - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/pilon | Pilon version 1.24 Thu Jan 28 13:00:45 2021 -0500
+[shovill] Using samclip - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/samclip | samclip 0.4.0
+[shovill] Using samtools - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/samtools | Version: 1.24 (using htslib 1.24)
+[shovill] Using seqkit - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/seqkit | Error: unknown flag: --versiom
+[shovill] Using skesa - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/skesa | SKESA 2.5.1
+[shovill] Using spades.py - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/spades.py | /dpssi/home/jonslo/conda_envs/shovill_JOSS/share/spades/spades_pipeline/support.py:508: SyntaxWarning: "\d" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\d"? A raw string is also an option.
+[shovill] Using trimmomatic - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/trimmomatic | 0.41
+[shovill] Using velvetg - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/velvetg | Version 1.2.10
+[shovill] Using velveth - /dpssi/home/jonslo/conda_envs/shovill_JOSS/bin/velveth | Version 1.2.10
+[shovill] Can't parse spades version from: Traceback (most recent call last):
+´´´

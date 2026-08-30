@@ -274,13 +274,16 @@ parallel_cmd=$(create_shovill_command_parallel "$output_dir/shovill_commands.txt
 #TODO: slurm mode not implemented.
 if [ "$mode" == "slurm" ]; then
     echo "INFO: running shovill commands in parallel via slurm with $cpus threads"
+    echo "Error: slurm mode is not implemented."
+    echo "use mode=local in the config file and run the script with 'sbatch' instead of 'bash'"
+    echo ""
 
-    #cmd 1: shovill
-    run_cmd_via_slurm "$parallel_cmd" "$cpus" "$mem" "$partition" "$job_name"_shovill "$output_dir/slurm_output"
+    # #cmd 1: shovill
+    # run_cmd_via_slurm "$parallel_cmd" "$cpus" "$mem" "$partition" "$job_name"_shovill "$output_dir/slurm_output"
 
-    #cmd 2: aggregate fasta files with symlink
-    aggregate_func_cmd="aggregate_fasta_files_with_symlink \"$output_dir/processing_files\" \"$output_dir/compiled_files\""
-    run_cmd_via_slurm "$aggregate_func_cmd" "$cpus" "$mem" "$partition" "$job_name"_aggregate "$output_dir/slurm_output" "$job_name"_shovill
+    # #cmd 2: aggregate fasta files with symlink
+    # aggregate_func_cmd="aggregate_fasta_files_with_symlink \"$output_dir/processing_files\" \"$output_dir/compiled_files\""
+    # run_cmd_via_slurm "$aggregate_func_cmd" "$cpus" "$mem" "$partition" "$job_name"_aggregate "$output_dir/slurm_output" "$job_name"_shovill
 
 
 elif [ "$mode" == "local" ]; then
