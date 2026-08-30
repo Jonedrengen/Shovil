@@ -16,7 +16,7 @@ or just set up the env yourself.
 ### Local
 
 ```bash
-bash shovill_runner_script.sh -i /path/to/reads -o /path/to/output -c scripts/config.env
+bash /scripts/shovill_runner_script.sh -i /path/to/reads -o /path/to/output -c scripts/config.env
 ```
 
 ### Slurm
